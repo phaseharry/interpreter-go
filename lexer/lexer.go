@@ -37,6 +37,8 @@ func (l *Lexer) readChar() {
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
+	l.skipWhitespace()
+
 	log.Printf("l.ch: %v", l.ch)
 	switch l.ch {
 	case '=':
@@ -86,6 +88,14 @@ func (l *Lexer) readIdentifier() string {
 		l.readChar()
 	}
 	return l.input[position:l.position]
+}
+
+// iterates through text until we get to a non empty space character
+// to parse
+func (l *Lexer) skipWhitespace() {
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+		l.readChar()
+	}
 }
 
 func newToken(tokenType token.TokenType, ch byte) token.Token {
