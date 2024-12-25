@@ -14,6 +14,8 @@ func TestNextToken(t *testing.T) {
 	};
 
 	let result = add(five, ten);
+	!-/*5;
+	5 < 10 > 5;
 	`
 
 	tests := []struct {
@@ -56,13 +58,24 @@ func TestNextToken(t *testing.T) {
 		{token.IDENT, "ten"},
 		{token.RIGHT_PAREN, ")"},
 		{token.SEMICOLON, ";"},
-		{token.EOF, ""},
+		{token.BANG, "!"},
+		{token.MINUS, "-"},
+		{token.SLASH, "/"},
+		{token.ASTERISK, "*"},
+		{token.INT, "5"},
+		{token.SEMICOLON, ";"},
+		{token.INT, "5"},
+		{token.LESS_THAN, "<"},
+		{token.INT, "10"},
+		{token.GREATER_THAN, ">"},
+		{token.INT, "5"},
+		{token.SEMICOLON, ";"},
 	}
-
 	lexer := New(input)
 
 	for i, testToken := range tests {
 		resultToken := lexer.NextToken()
+		// log.Printf("resultToken: %v, testToken: %v", resultToken, testToken)
 		if resultToken.Type != testToken.expectedType {
 			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q", i, testToken.expectedType, resultToken.Type)
 		}

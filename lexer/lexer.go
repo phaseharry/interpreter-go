@@ -53,6 +53,18 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.COMMA, l.ch)
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
+	case '-':
+		tok = newToken(token.MINUS, l.ch)
+	case '!':
+		tok = newToken(token.BANG, l.ch)
+	case '*':
+		tok = newToken(token.ASTERISK, l.ch)
+	case '/':
+		tok = newToken(token.SLASH, l.ch)
+	case '>':
+		tok = newToken(token.GREATER_THAN, l.ch)
+	case '<':
+		tok = newToken(token.LESS_THAN, l.ch)
 	case '{':
 		tok = newToken(token.LEFT_BRACE, l.ch)
 	case '}':
@@ -61,8 +73,6 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Literal = ""
 		tok.Type = token.EOF
 	default:
-		log.Printf("illegal l.ch: %v, string: %v", l.ch, string(l.ch))
-
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
 			tok.Type = token.LookupIdent(tok.Literal)
@@ -73,7 +83,7 @@ func (l *Lexer) NextToken() token.Token {
 			tok.Literal = l.readNumber()
 			return tok
 		} else {
-			log.Printf("illegal l.ch: %v", l.ch)
+			log.Printf("illegal l.ch: %v, string: %v", l.ch, string(l.ch))
 			tok = newToken(token.ILLEGAL, l.ch)
 		}
 	}
