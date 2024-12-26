@@ -1,8 +1,8 @@
 package lexer
 
 import (
-	"interpreter-go/token"
 	"log"
+	"monkey-lang-interpreted/token"
 )
 
 type Lexer struct {
@@ -36,10 +36,8 @@ func (l *Lexer) readChar() {
 
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
-
 	l.skipWhitespace()
 
-	log.Printf("l.ch: %v", l.ch)
 	switch l.ch {
 	case '=':
 		tok = newToken(token.ASSIGN, l.ch)
@@ -76,7 +74,7 @@ func (l *Lexer) NextToken() token.Token {
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
 			tok.Type = token.LookupIdent(tok.Literal)
-			log.Printf("tok: %v", tok)
+			// log.Printf("tok: %v", tok)
 			return tok
 		} else if isDigit(l.ch) {
 			tok.Type = token.INT

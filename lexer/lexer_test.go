@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"interpreter-go/token"
+	"monkey-lang-interpreted/token"
 	"testing"
 )
 
@@ -16,6 +16,12 @@ func TestNextToken(t *testing.T) {
 	let result = add(five, ten);
 	!-/*5;
 	5 < 10 > 5;
+
+	if (5 < 10) {
+		return true;
+	} else {
+		return false;
+	}
 	`
 
 	tests := []struct {
@@ -70,6 +76,24 @@ func TestNextToken(t *testing.T) {
 		{token.GREATER_THAN, ">"},
 		{token.INT, "5"},
 		{token.SEMICOLON, ";"},
+
+		{token.IF, "if"},
+		{token.LEFT_PAREN, "("},
+		{token.INT, "5"},
+		{token.LESS_THAN, "<"},
+		{token.INT, "10"},
+		{token.RIGHT_PAREN, ")"},
+		{token.LEFT_BRACE, "{"},
+		{token.RETURN, "return"},
+		{token.TRUE, "true"},
+		{token.SEMICOLON, ";"},
+		{token.RIGHT_BRACE, "}"},
+		{token.ELSE, "else"},
+		{token.LEFT_BRACE, "{"},
+		{token.RETURN, "return"},
+		{token.FALSE, "false"},
+		{token.SEMICOLON, ";"},
+		{token.RIGHT_BRACE, "}"},
 	}
 	lexer := New(input)
 
