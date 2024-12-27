@@ -39,8 +39,6 @@ func (l *Lexer) NextToken() token.Token {
 	l.skipWhitespace()
 
 	switch l.ch {
-	case '=':
-		tok = newToken(token.ASSIGN, l.ch)
 	case ';':
 		tok = newToken(token.SEMICOLON, l.ch)
 	case '(':
@@ -53,8 +51,26 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.PLUS, l.ch)
 	case '-':
 		tok = newToken(token.MINUS, l.ch)
+	case '=':
+		/**
+		if the character after current char is "="
+		then it is an equality operator and not assignment
+		*/
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar() // advancing the current char so the next char will be used. "=="
+			tok = token.Token{Type: token.EQUAL, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.ASSIGN, l.ch)
+		}
 	case '!':
-		tok = newToken(token.BANG, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.NOT_EQUAL, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.BANG, l.ch)
+		}
 	case '*':
 		tok = newToken(token.ASTERISK, l.ch)
 	case '/':
@@ -116,6 +132,22 @@ func (l *Lexer) readNumber() string {
 		l.readChar()
 	}
 	return l.input[position:l.position]
+}
+
+/*
+returns the character after the current character
+to decide if the next character is impactful in determining
+what the token / identifier is. ex) if we're at "=" and the next
+character is "==" then we know it's an equality operator and not
+just an assignment operator. It doesn't increment the lexer position
+value so we stay there at current position.
+*/
+func (l *Lexer) peekChar() byte {
+	if l.readPosition >= len(l.input) {
+		return 0
+	} else {
+		return l.input[l.readPosition]
+	}
 }
 
 func newToken(tokenType token.TokenType, ch byte) token.Token {

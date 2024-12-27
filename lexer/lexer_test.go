@@ -22,6 +22,9 @@ func TestNextToken(t *testing.T) {
 	} else {
 		return false;
 	}
+
+	10 == 10
+	10 != 9
 	`
 
 	tests := []struct {
@@ -94,7 +97,16 @@ func TestNextToken(t *testing.T) {
 		{token.FALSE, "false"},
 		{token.SEMICOLON, ";"},
 		{token.RIGHT_BRACE, "}"},
+		{token.INT, "10"},
+		{token.EQUAL, "=="},
+		{token.INT, "10"},
+		{token.INT, "10"},
+		{token.NOT_EQUAL, "!="},
+		{token.INT, "9"},
 	}
+
+	// 10 == 10
+	// 10 != 9
 	lexer := New(input)
 
 	for i, testToken := range tests {
