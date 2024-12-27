@@ -1,3 +1,7 @@
+High level steps
+1. read source code
+2. lex / tokenize source code 
+
 Lexer (Chapter 1)
 - only support ASCII in this lexer because each char will only take up 1 byte guaranteed. If Unicode support is added, 
 then reading in characters will need to be handled differently since Unicode can use either 2 or 4 bytes depending on format.
