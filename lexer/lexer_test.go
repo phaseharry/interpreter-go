@@ -105,8 +105,6 @@ func TestNextToken(t *testing.T) {
 		{token.INT, "9"},
 	}
 
-	// 10 == 10
-	// 10 != 9
 	lexer := New(input)
 
 	for i, testToken := range tests {
